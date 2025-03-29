@@ -17,12 +17,14 @@ function UserList() {
         hasPreviousPage:false,
         totalPages:0,
         page:0
-    })
+    }) // pagination params 
     
-    const fetchCurrentPage = useSelector((state:RootState)=>state.filter)
+    const fetchCurrentPage = useSelector((state:RootState)=>state.filter) // fetching current pagination params
 
 
-    const apiCaller = useApiCall()
+    const apiCaller = useApiCall() // api caller custom hook 
+
+    // fetching user-list according to page options
     async function fetchUserList(){
         const url = `${BASE_URL}/users?page=${fetchCurrentPage.page}`
         const res = await apiCaller(url,axios.get)
@@ -34,16 +36,16 @@ function UserList() {
             page:res.page
         })   
     }
-
+    
     useEffect(()=>{
     fetchUserList()
-    },[fetchCurrentPage])
+    },[fetchCurrentPage]) // calling fetchUser function every time when filter params changed
   return (
     <Navbar>
         <DataTable 
         columns={columns}
         data={userList}
-        pagination={pagination}
+        pagination={pagination} // passing current pagination params 
         />
       
     </Navbar>

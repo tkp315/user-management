@@ -27,7 +27,7 @@ import { BASE_URL } from "@/lib/apiUtils";
 
 interface EditModalProp {
   userDetails: UserI
-}
+} // user fields 
 
 const fields = [
   {
@@ -45,8 +45,10 @@ const fields = [
     type: "email",
     label: "Email",
   },
-];
+]; // editable fields 
 
+
+// zod Schema for validation
 const editSchema = z.object({
   email: z
     .string({ message: "EMAIL IS REQUIRED" })
@@ -55,14 +57,15 @@ const editSchema = z.object({
   last_name: z.string().nonempty({ message: "LAST NAME IS REQUIRED" }),
 });
 
-type EditForm = z.infer<typeof editSchema>;
+type EditForm = z.infer<typeof editSchema>; // type of Form 
 
 function EditModal({ userDetails }: EditModalProp) {
 
-  const [isEditted, setIsEditted] = useState(false);
+  const [isEditted, setIsEditted] = useState(false); // toggling dialog
 
-  const apiCaller = useApiCall();
+  const apiCaller = useApiCall(); // custom axios api calling hook
 
+   // using useForm hook with zod resolver
   const form = useForm({
     defaultValues: {
       first_name: userDetails.first_name,
@@ -73,7 +76,8 @@ function EditModal({ userDetails }: EditModalProp) {
   });
 
   const { formState } = form;
-
+ 
+  // form submission handler
   const onSubmit: SubmitHandler<EditForm> = async (data) => {
     const url = `${BASE_URL}/users/${userDetails.id}`;
     const res = await apiCaller(url, axios.put, data);
@@ -99,11 +103,13 @@ function EditModal({ userDetails }: EditModalProp) {
             <strong>Last Name</strong>, and <strong>Email</strong>
           </DialogDescription>
         </DialogHeader>
+        {/* ShadCN Form  */}
         <FormProvider {...form}>
           <form
             className="mt-3 flex flex-col gap-4"
             onSubmit={form.handleSubmit(onSubmit)}
           >
+            {/* Mapping with fields array */}
             <div className="flex flex-col gap-2">
               {fields.map((item, idx) => (
                 <div className="flex flex-col gap-1" key={idx}>
@@ -144,6 +150,7 @@ function EditModal({ userDetails }: EditModalProp) {
                   />
                 </div>
               ))}
+              {/* Submission Button  */}
               <Button
                 type="submit"
                 disabled={formState.isSubmitting}

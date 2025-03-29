@@ -1,35 +1,36 @@
-import { type Table } from "@tanstack/react-table"
+import { type Table } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-} from "lucide-react"
+} from "lucide-react";
 
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import { Pagination } from "./data-table"
-import { RootState } from "@/redux/store"
-import { updatePaginationOptions } from "@/redux/slice/filteration"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { Pagination } from "./data-table";
+import { RootState } from "@/redux/store";
+import { updatePaginationOptions } from "@/redux/slice/filteration";
 
 interface DataTablePaginationProps<TData> {
-  table: Table<TData>
-  pagination: Pagination
-}
+  table: Table<TData>;
+  pagination: Pagination;
+} // pagination prop
 
 export function DataTablePagination<TData>({
   table,
   pagination,
 }: DataTablePaginationProps<TData>) {
-  const dispatch = useDispatch()
-  const pageParams = useSelector((state: RootState) => state.filter)
+  const dispatch = useDispatch();
+
+  const pageParams = useSelector((state: RootState) => state.filter); // getting filter parameters
 
   const [paginationParameter, setPaginationParameter] = useState({
     limit: pageParams.limit,
     page: pageParams.page,
-  })
+  }); // new filter parameters for updation
 
   useEffect(() => {
     dispatch(
@@ -37,18 +38,19 @@ export function DataTablePagination<TData>({
         limit: paginationParameter.limit,
         page: paginationParameter.page,
       })
-    )
-  }, [paginationParameter, dispatch])
-
-
+    );
+  }, [paginationParameter, dispatch]); // updated filter params in store
 
   return (
     <div className="flex items-center justify-between px-2">
+      {/* Selected rows out of total rows */}
+
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
 
+      {/* Showing current page out of total pages */}
       <div className="flex w-[100px] items-center justify-center text-sm font-medium">
         Page {pageParams.page} of {pagination.totalPages || "Loading.."}
       </div>
@@ -59,8 +61,8 @@ export function DataTablePagination<TData>({
           variant="outline"
           className="hidden h-8 w-8 p-0 lg:flex"
           onClick={() => {
-            table.setPageIndex(0)
-            setPaginationParameter({ ...paginationParameter, page: 1 })
+            table.setPageIndex(0);
+            setPaginationParameter({ ...paginationParameter, page: 1 });
           }}
           disabled={!pagination.hasPreviousPage}
         >
@@ -73,11 +75,11 @@ export function DataTablePagination<TData>({
           variant="outline"
           className="h-8 w-8 p-0"
           onClick={() => {
-            table.previousPage()
+            table.previousPage();
             setPaginationParameter({
               ...paginationParameter,
               page: Math.max((paginationParameter.page || 1) - 1, 1),
-            })
+            });
           }}
           disabled={!pagination.hasPreviousPage}
         >
@@ -90,14 +92,14 @@ export function DataTablePagination<TData>({
           variant="outline"
           className="h-8 w-8 p-0"
           onClick={() => {
-            table.nextPage()
+            table.nextPage();
             setPaginationParameter({
               ...paginationParameter,
               page: Math.min(
                 (paginationParameter.page || 1) + 1,
                 pagination.totalPages
               ),
-            })
+            });
           }}
           disabled={!pagination.hasNextPage}
         >
@@ -122,5 +124,5 @@ export function DataTablePagination<TData>({
         </Button>
       </div>
     </div>
-  )
+  );
 }

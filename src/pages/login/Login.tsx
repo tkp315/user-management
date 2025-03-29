@@ -28,26 +28,27 @@ import { updateStatus } from "@/redux/slice/user";
 import { RootState } from "@/redux/store";
 import { BASE_URL } from "@/lib/apiUtils";
 
+// Validation Schema using zod lib
 const loginSchema = z.object({
   email: z
     .string({ message: "EMAIL IS REQUIRED" })
     .email({ message: "INVALID EMAIL ADDRESS" }),
-  password: z.string().nonempty({message:"PASSWORD IS REQUIRED"})
+  password: z.string().nonempty({ message: "PASSWORD IS REQUIRED" }),
 });
 
-type LoginForm = z.infer<typeof loginSchema>;
+type LoginForm = z.infer<typeof loginSchema>; // This will be type of Login Form
 
 function Login() {
- 
-  const [showPassword, setShowPassword] = useState(false);
-  const apiCaller = useApiCall();
-  const isLoggedIn = useSelector((state:RootState)=>state.user.isLoggedIn)
+  const [showPassword, setShowPassword] = useState(false); // for toggling password
+  const apiCaller = useApiCall(); // custom hook for api calling
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn); // user login status
 
-
+  // function to toggle visibility
   function handleShowPassword() {
     setShowPassword(!showPassword);
   }
 
+  // using useForm hook for form and zod resolver for validation
   const form = useForm({
     defaultValues: {
       email: "",
@@ -55,25 +56,26 @@ function Login() {
     },
     resolver: zodResolver(loginSchema),
   });
-  const { formState } = form;
-  const dispatch = useDispatch()
+
+  const { formState } = form; // Taking form state
+
+  const dispatch = useDispatch(); // initiate dispatch hook for updating values in store
+
+  // Form Data submission function
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-  
-      
-      const url = `${BASE_URL}/login`;
-      const res = await apiCaller(url,  axios.post,data);
-      console.log(res);
-      if (res){
-   
-      dispatch(updateStatus({isLoggedIn:true}))
-      window.sessionStorage.setItem('token',res.token)
-      form.reset()
-      }
-    
+    const url = `${BASE_URL}/login`;
+    const res = await apiCaller(url, axios.post, data);
+    console.log(res);
+    if (res) {
+      dispatch(updateStatus({ isLoggedIn: true })); // updating value of isLoggedIn in store
+      window.sessionStorage.setItem("token", res.token); // storing token in session storage
+      form.reset(); // reseting form when res.status==200 written in custom hook
+    }
   };
 
   return (
-    <Dialog  open={!isLoggedIn}  >
+    // toggling dialog according to loggedin status
+    <Dialog open={!isLoggedIn}>
       <DialogTrigger>
         <Button variant="default" className=" cursor-pointer">
           Login
@@ -86,11 +88,14 @@ function Login() {
             Please enter your login credentials to access your account
           </DialogDescription>
         </DialogHeader>
+        {/* ShadCN FormProvider  */}
         <FormProvider {...form}>
-          <form noValidate
+          <form
+            noValidate
             onSubmit={form.handleSubmit(onSubmit)}
             className="mt-3 flex flex-col gap-4"
           >
+            {/* Form Field for email */}
             <FormField
               control={form.control}
               name="email"
@@ -124,7 +129,7 @@ function Login() {
                 </FormItem>
               )}
             />
-
+            {/* Form Field for password with toggle visibility */}
             <div className="relative">
               <FormField
                 control={form.control}
@@ -167,10 +172,10 @@ function Login() {
                 {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
             </div>
-
+            {/* Form Submission Button */}
             <Button
               type="submit"
-              disabled={formState.isSubmitting }
+              disabled={formState.isSubmitting}
               className="mt-4 w-full bg-blue-600 text-white cursor-pointer py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {formState.isSubmitting ? (

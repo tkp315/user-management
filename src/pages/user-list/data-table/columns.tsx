@@ -10,7 +10,7 @@ export const userSchema = z.object({
   last_name: z.string(),
   avatar: z.string(),
   email: z.string(),
-});
+}); // table columns
 
 export type UserI = z.infer<typeof userSchema>;
 export const columns: ColumnDef<UserI>[] = [
@@ -36,7 +36,7 @@ export const columns: ColumnDef<UserI>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-  },
+  }, // id
 
   {
     accessorKey: "avatar",
@@ -51,29 +51,29 @@ export const columns: ColumnDef<UserI>[] = [
         }
       </div>
     ),
-  },
+  }, // checkbox
 
   {
     accessorKey: "first_name",
     header: () => <div className="font-semibold text-lg">First Name</div>,
     cell: ({ row }) => <div className="">{row.getValue("first_name")}</div>,
     filterFn: startsWithFilter,
-  },
+  }, // first_name  with filter
   {
     accessorKey: "last_name",
     header: () => <div className="font-semibold text-lg">Last Name</div>,
     cell: ({ row }) => <div className="">{row.getValue("last_name")}</div>,
     
-  },
+  }, // last name
   {
     accessorKey: "email",
     header: () => <div className="font-semibold text-lg">Email</div>,
     cell: ({ row }) => <div className="">{row.getValue("email")}</div>,
     
-  },
+  }, // email
 
   {
     id: "actions",
     cell: ({ row }) => <DataTableRowActions row={row} />,
-  },
+  },// action column
 ];

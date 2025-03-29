@@ -1,4 +1,3 @@
-
 import { Row } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -12,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Copy,  MoreHorizontal } from "lucide-react";
-import {  UserI, userSchema } from "./columns";
+import { Copy, MoreHorizontal } from "lucide-react";
+import { UserI, userSchema } from "./columns";
 import { Dialog } from "@/components/ui/dialog";
 import DeleteModal from "./user-edit/DeleteModal";
 
@@ -23,13 +22,11 @@ interface DataTableRowActionsProps {
   row: Row<UserI>;
 }
 
-export function DataTableRowActions({
-  row,
-}: DataTableRowActionsProps) {
-
+export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const user = userSchema.parse(row.original);
   return (
     <Dialog>
+      {/* Actions List DropDown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -46,6 +43,7 @@ export function DataTableRowActions({
           <DropdownMenuSeparator />
 
           <DropdownMenuGroup>
+            {/* Copy Email Button */}
             <DropdownMenuItem
               className="px-6 py-2"
               onClick={() => navigator.clipboard.writeText(String(user.email))}
@@ -53,11 +51,11 @@ export function DataTableRowActions({
               <Copy className="mr-2 h-4 w-4" />
               Copy Email
             </DropdownMenuItem>
+            
+            {/* Edit and Delete Dialog */}
             <div className="flex flex-col gap-2">
-              {/* <EditDialog task={category}></EditDialog>
-              <DeleteDialog category={category} /> */}
-              <EditModal userDetails={row.original}/>
-              <DeleteModal userId={row.original.id}/>
+              <EditModal userDetails={row.original} />
+              <DeleteModal userId={row.original.id} />
             </div>
           </DropdownMenuGroup>
         </DropdownMenuContent>

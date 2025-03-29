@@ -15,7 +15,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   return (
     <div className="flex lg:flex-row gap-2 w-full lg:justify-between  ">
-
+      {/*first_name Search Input  */}
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Search users..."
@@ -28,6 +28,7 @@ export function DataTableToolbar<TData>({
           className="h-8 w-[150px] lg:w-[250px]"
         />
       </div>
+      {/* Toggle View Dropdown */}
       <DataTableViewOptions table={table} />
     </div>
   );

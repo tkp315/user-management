@@ -3,15 +3,20 @@ import { toast } from "sonner";
 import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
 import { CheckCircle, XCircle } from "lucide-react";
 
-type AxiosMethod = (url: string, config?:AxiosRequestConfig) => Promise<AxiosPromise>;
+type AxiosMethod = (url: string, config?:AxiosRequestConfig) => Promise<AxiosPromise>; // axios method type
+
+// custom hook for api Calling
 
 const useApiCall = () => {
   async function apiCall(
     url: string,
     axiosMethod: AxiosMethod,
     data?: object | File | null
-  ) {
-    const config = data ?  data  : undefined;
+  ) // taking params
+  {
+    const config = data ?  data  : undefined; // data in post/put methods but not in get,delete methods
+
+    // loading toast
     const loadingToast = toast("Loading...", {
       description: (
         <div className="flex items-center space-x-2">
@@ -25,10 +30,12 @@ const useApiCall = () => {
 
     try {
        
-      const res =  await axiosMethod(url,config);
+      const res =  await axiosMethod(url,config); // calling axios method like get,post
        console.log(res)
       if (res.status === 200||res.status===204) {
-        toast.dismiss(loadingToast);
+        
+        toast.dismiss(loadingToast); // dismissing loading toast
+        // success toast 
         toast("Success!", {
           description: (
             <div className="flex items-center space-x-2">
@@ -39,9 +46,11 @@ const useApiCall = () => {
           position: "bottom-right",
           duration: 2000,
         });
-        return res.data;
+        return res.data; // returning data
       } else {
+
         toast.dismiss(loadingToast);
+        // showing failed toast with error message
         toast("Failed!", {
           description: (
             <div className="flex items-center space-x-2">
@@ -59,6 +68,8 @@ const useApiCall = () => {
         axios.isAxiosError(error) && error.response?.data?.error
           ? error.response.data.error
           : "An error occurred while processing your request.";
+
+          // showing error message 
       toast("Failed!", {
         description: (
           <div className="flex items-center space-x-2">

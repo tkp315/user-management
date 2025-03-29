@@ -17,14 +17,16 @@ const tabs = [
 import { ReactNode } from "react";
 
 const Navbar = ({ children }: { children: ReactNode }) => {
-  const path = useLocation();
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const path = useLocation(); // Getting current page url to style the current tab
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn); // LoggedIn status
 
   return (
     <div>
       <div className="flex flex-row items-center justify-between px-2 py-2 bg-gradient-to-r from-white via-gray-100 to-gray-200 shadow-lg ">
+        {/*Logo  */}
         <div className="text-2xl font-semibold tracking-wide ml-4">LOGO</div>
 
+        {/* Tabs */}
         <div className="flex flex-row gap-10 justify-center">
           {tabs.map((tab, idx) => (
             <Link to={tab.url}>
@@ -39,13 +41,14 @@ const Navbar = ({ children }: { children: ReactNode }) => {
             </Link>
           ))}
         </div>
-
+        {/* Conditionaly Showing Login Button */}
         {!isLoggedIn ? (
           <Login />
         ) : (
           <div className="flex w-10 h-10 border rounded-full"></div>
         )}
       </div>
+      {/* Rendering JSX Component Below Navbar */}
       {children}
     </div>
   );

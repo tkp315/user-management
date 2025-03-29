@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/sonner"
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <BrowserRouter>
+    {/* setting toast */}
     <Toaster closeButton
     className="border-black"
     position="bottom-right"

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,7 +14,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -23,35 +23,37 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { DataTableToolbar } from "./data-table-toolbar"
-import { DataTablePagination } from "./data-table-pagination"
+import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTablePagination } from "./data-table-pagination";
 export interface Pagination {
-hasNextPage:boolean,
-hasPreviousPage:boolean,
-totalPages:number,
-page?:number
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  totalPages: number;
+  page?: number;
 }
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[],
-  pagination:Pagination
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  pagination: Pagination;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pagination
+  pagination,
 }: DataTableProps<TData, TValue>) {
-
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  //  Sorting Params
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({}); // column visibility purpose
+  const [rowSelection, setRowSelection] = React.useState({}); // Row selection object
+
+  // Tanstack Table hook
   const table = useReactTable({
     data,
     columns,
@@ -72,20 +74,28 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+  });
 
   return (
     <div className="space-y-4 mx-4 my-2 ">
+      {/* Redering Toolbar at top */}
       <DataTableToolbar table={table} />
+
       <div className=" border border-chart-1 ">
-        <Table className="  max-w-full bg-gradient-to-br from-blue-50 via-white to-blue-100
-">
+        <Table
+          className="  max-w-full bg-gradient-to-br from-blue-50 via-white to-blue-100
+"
+        >
+          {/* Table Column's Header Row */}
           <TableHeader className="">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="border-b border-blue-300 bg-blue-100 ">
+                    <TableHead
+                      key={header.id}
+                      className="border-b border-blue-300 bg-blue-100 "
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -93,19 +103,26 @@ export function DataTable<TData, TValue>({
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
           </TableHeader>
+
+          {/* Table's Body Row */}
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
+              // Geting each row
               table.getRowModel().rows.map((row) => (
-                <TableRow className="hover:bg-gray-200 transition-all duration-200 cursor-pointer"
+                <TableRow
+                  className="hover:bg-gray-200 transition-all duration-200 cursor-pointer"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
+                    //Conditionaly rendering  cells
+
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -128,9 +145,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination 
-       pagination={pagination}
-       table={table} />
+      {/* Pagination Component */}
+      <DataTablePagination pagination={pagination} table={table} />
     </div>
-  )
+  );
 }

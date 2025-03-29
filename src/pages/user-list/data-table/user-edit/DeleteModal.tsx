@@ -16,11 +16,14 @@ import { useState } from "react";
 
 interface DeleteModalProp {
   userId: number;
-}
+} // User Id for deleting
+
 function DeleteModal({ userId }: DeleteModalProp) {
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const apiCaller = useApiCall();
+  const [isDeleted, setIsDeleted] = useState(false); // toggling dialog based on this
+  const [isDeleting, setIsDeleting] = useState(false); // Loading based on this
+  const apiCaller = useApiCall(); // custom hook for api calling
+
+  // Delete Handler
   async function handleDelete() {
     setIsDeleting(true);
     try {

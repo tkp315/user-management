@@ -18,8 +18,6 @@ const paginationSlice = createSlice({
       const paginationData = action.payload
       state.page = paginationData.page || 1
       
-    //   sessionStorage.setItem("page", JSON.stringify(state.page))
-    //   sessionStorage.setItem("limit", JSON.stringify(state.limit))
     },
   },
 })

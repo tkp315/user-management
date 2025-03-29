@@ -10,12 +10,15 @@ function Home() {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
+    // Wrapping Home into Navbar Component
     <Navbar>
       <div className="bg-gradient-to-br from-blue-50 via-white to-blue-100 flex justify-center items-center min-h-screen mx-2 ">
         <div className="flex flex-col gap-2 ">
           <h1 className="text-3xl font-bold text-gray-800">
             Welcome to User Management App
           </h1>
+
+          {/* Conditionaly Showing Login Dialog and Dashboard Button*/}
           {!isLoggedIn ? (
             <Login />
           ) : (

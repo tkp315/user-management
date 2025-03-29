@@ -21,20 +21,22 @@ export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
   return (
-    <DropdownMenu >
-      <DropdownMenuTrigger asChild >
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button
-          variant='outline'
-          size='sm'
-          className='ml-auto  h-8 float-left '
+          variant="outline"
+          size="sm"
+          className="ml-auto  h-8 float-left "
         >
-          <Settings2 className='mr-2 h-4 w-4' />
+          <Settings2 className="mr-2 h-4 w-4" />
           View
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent  className='w-[150px]'>
+      <DropdownMenuContent className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
+
+        {/* List of all Columns of table with toggle check */}
         {table
           .getAllColumns()
           .filter(
@@ -45,7 +47,7 @@ export function DataTableViewOptions<TData>({
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className='capitalize'
+                className="capitalize"
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >

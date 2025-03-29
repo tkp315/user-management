@@ -6,6 +6,7 @@ import { columns } from "./data-table/columns"
 import { useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import Navbar from "../components/Navbar"
+import { BASE_URL } from "@/lib/apiUtils"
 
 
 function UserList() {
@@ -23,7 +24,7 @@ function UserList() {
 
     const apiCaller = useApiCall()
     async function fetchUserList(){
-        const url = `https://reqres.in/api/users?page=${fetchCurrentPage.page}`
+        const url = `${BASE_URL}/users?page=${fetchCurrentPage.page}`
         const res = await apiCaller(url,axios.get)
         setUserList(res.data)
         setPagination({

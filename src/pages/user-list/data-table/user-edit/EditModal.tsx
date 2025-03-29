@@ -23,6 +23,7 @@ import { z } from "zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserI } from "../columns";
+import { BASE_URL } from "@/lib/apiUtils";
 
 interface EditModalProp {
   userDetails: UserI
@@ -74,7 +75,7 @@ function EditModal({ userDetails }: EditModalProp) {
   const { formState } = form;
 
   const onSubmit: SubmitHandler<EditForm> = async (data) => {
-    const url = `https://reqres.in/api/users/${userDetails.id}`;
+    const url = `${BASE_URL}/users/${userDetails.id}`;
     const res = await apiCaller(url, axios.put, data);
     if (res) {
       setIsEditted(false);

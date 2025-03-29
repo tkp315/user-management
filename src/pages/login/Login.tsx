@@ -26,6 +26,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateStatus } from "@/redux/slice/user";
 import { RootState } from "@/redux/store";
+import { BASE_URL } from "@/lib/apiUtils";
 
 const loginSchema = z.object({
   email: z
@@ -58,8 +59,8 @@ function Login() {
   const dispatch = useDispatch()
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
   
-    
-      const url = `https://reqres.in/api/login`;
+      
+      const url = `${BASE_URL}/login`;
       const res = await apiCaller(url,  axios.post,data);
       console.log(res);
       if (res){

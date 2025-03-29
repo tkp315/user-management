@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import useApiCall from "@/hooks/useApiCall";
+import { BASE_URL } from "@/lib/apiUtils";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -23,7 +24,7 @@ function DeleteModal({ userId }: DeleteModalProp) {
   async function handleDelete() {
     setIsDeleting(true);
     try {
-      const url = `https://reqres.in/api/users/${userId}`;
+      const url = `${BASE_URL}/api/users/${userId}`;
       await apiCaller(url, axios.delete);
 
       setIsDeleted(false);
